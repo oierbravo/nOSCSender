@@ -1,0 +1,28 @@
+
+{
+  "name": "nOSCSender",
+  "description": "Simple command-line OSC sender",
+  "version": "0.0.1",
+  "homepage": "https://github.com/oierbravo/nOSCSender",
+
+  "repository": {
+    "type": "git", 
+    "url": "git@github.com:oierbravo/nOSCSender.git"
+  },
+  "author": {
+    "name": "Oier Bravo Urtasun", 
+    "url": "", 
+    "email": "oierbravo@gmail.com"
+  },
+  "dependencies": {
+    "omgosc": "*",
+    "commander": "*"
+    
+  },
+  "bin": { "noscsender": "./bin/noscsender" },
+  "keywords": [
+    "commandline"
+    ,"osc"
+    ,"sender"
+  ]
+}

@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var program = require('commander');
+var osc = require('omgosc');
+
+program
+  .version('0.0.1')
+  .usage('[options]')
+  .option('-p, --port <port>', 'specify the port [9999]', Number, 9999)
+  .option('-h, --host <host>', 'specify the host', String, 'localhost')
+  .option('-n, --namespace <namespace>', 'specify the namespace.Ex:live will prefix messages with /live/')
+  .parse(process.argv);
+
+var oscSender = new osc.UdpSender(program.host,program.port);
+console.log('OSC Sender started on %s:%d', program.host,program.port);
+askForAddress();
+function askForAddress(){
+  program.prompt('message: ', function(message){
+   var msgArray = message.split(' ');
+   var address = msgArray.shift();
+   if(program.namespace){
+	address = '/' + program.namespace + '/' + address;
+   }
+   var typeTag = getTypeTags(msgArray);
+   oscSender.send(address,typeTag,msgArray);
+   askForAddress();
+  });
+}
+function getTypeTags(argArray){
+  var output = '';
+  argArray.forEach(function(v,i,a){
+    output += getTypeTag(v);
+  });
+  return output;
+}
+function getTypeTag(value){
+	if(value.indexOf('.') != -1){
+	//Can be a float.
+		var posibleFloat = parseFloat(value);
+		if(!isNaN(posibleFloat)){
+		  return 'f';
+		} else {
+		  return 's';
+		}
+	} else {
+	//Can be an integer.
+		var posibleInteger = parseInt(value);
+		if(!isNaN(posibleInteger)){
+		  return 'i';
+		} else {
+		  return 's';
+		}
+	}
+}
