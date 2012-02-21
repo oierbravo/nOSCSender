@@ -1,0 +1,5 @@
+.bi
+.project
+node_modules/hook.io
+node_modules/hook.io-oscserver
+node_modules/.bin
